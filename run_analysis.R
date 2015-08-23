@@ -31,7 +31,7 @@ mergedData <- rbind(train, test)
 # Part 2 - Mean and Standard Deviation for each feature.
 mean_cols <- select(mergedData,contains("mean"))
 std_cols <- select(mergedData,contains("Std"))
-meanStdData = cbind(mean_cols,std_cols,Subject=mergedData$Subject,Activity=mergedData$Activity)
+meanStdData <- cbind(mean_cols,std_cols,Subject=mergedData$Subject,Activity=mergedData$Activity)
 mdt <- tbl_df(meanStdData)
 
 # Part 3
