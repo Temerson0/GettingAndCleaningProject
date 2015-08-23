@@ -5,7 +5,7 @@
 library(data.table)
 library(dplyr)
 
-# Part 1- Read 2 datasets and merge into 1.
+# Part 1- Read all datasets that will be merged into one dataset.
 xtest <- read.table("X_test.txt")
 ytest <- read.table("Y_test.txt")
 subtest <- read.table("subject_test.txt")
@@ -14,7 +14,7 @@ ytrain <- read.table("Y_train.txt")
 subtrain <- read.table("subject_train.txt")
 
 # Part 4
-# Add the column names to the data
+# Add the column names to the data. Use the features.txt file.
 features <- readLines("features.txt")
 names(xtest) <- features
 names(xtrain) <- features
@@ -23,14 +23,15 @@ names(ytrain) <- "Activity"
 names(subtest) <- "Subject"
 names(subtrain) <- "Subject"
 
-# Merge training and test dataset into one.
+# Part 1 continuation - Perform merge training, test and subject datasets into one.
 test <- cbind(xtest,subtest,ytest)
 train <- cbind(xtrain,subtrain,ytrain)
 mergedData <- rbind(train, test)
 
-# Part 2 - Mean and Standard Deviation for each feature.
-mean_cols <- select(mergedData,contains("mean"))
-std_cols <- select(mergedData,contains("Std"))
+# Part 2 - Calculate Mean and Standard Deviation for each feature.
+mean_cols <- select(mergedData,contains("mean"))        # Select only features with mean.
+std_cols <- select(mergedData,contains("Std"))          # Select only features with Std.
+# Keep only mean and Std features.
 meanStdData <- cbind(mean_cols,std_cols,Subject=mergedData$Subject,Activity=mergedData$Activity)
 mdt <- tbl_df(meanStdData)
 
@@ -46,6 +47,6 @@ mdt[mdt[,"Activity"]==6,"Activity"] = "LAYING"
 # Part 5 - Tidy dataset - This is a wide representation
 tidyData <- mdt %>%
     dplyr::group_by(Subject,Activity) %>%      # Group by subject and activity
-    dplyr::summarise_each(funs(mean))   # Mean for each variable
+    dplyr::summarise_each(funs(mean))           # Calculate Mean for each subject and activity
 
 write.table(tidyData,file = "tidyData.txt",row.name = FALSE)
