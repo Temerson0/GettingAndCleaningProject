@@ -28,10 +28,10 @@ test <- cbind(xtest,subtest,ytest)
 train <- cbind(xtrain,subtrain,ytrain)
 mergedData <- rbind(train, test)
 
-# Part 2 - Calculate Mean and Standard Deviation for each feature.
+# Part 2 - Extract only features with Mean and Standard Deviation.
 mean_cols <- select(mergedData,contains("mean"))        # Select only features with mean.
 std_cols <- select(mergedData,contains("Std"))          # Select only features with Std.
-# Keep only mean and Std features.
+# Keep only mean, Std, subject and activity features.
 meanStdData <- cbind(mean_cols,std_cols,Subject=mergedData$Subject,Activity=mergedData$Activity)
 mdt <- tbl_df(meanStdData)
 
